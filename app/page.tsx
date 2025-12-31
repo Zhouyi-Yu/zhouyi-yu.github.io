@@ -14,7 +14,7 @@ export default function Home() {
       title: "Neo4j RAG System",
       category: "AI Engineering / Cloud Deployment",
       desc: "Production-grade RAG pipeline reduced latency from 50s to <20s using Speculative Parallel Synthesis.",
-      link: "#",
+      link: "https://github.com/Zhouyi-Yu/Neo4j-webpageGPT5.git",
       tags: ["FastAPI", "Neo4j", "Docker", "React"]
     },
     {
@@ -22,7 +22,7 @@ export default function Home() {
       title: "Textile Risk Engine",
       category: "Data Science / Machine Learning",
       desc: "Global supply chain analytics platform using ML forecasts and Monte Carlo risk simulations.",
-      link: "#",
+      link: "https://github.com/Zhouyi-Yu/TextileRiskEngine.git",
       tags: ["Python", "Pandas", "XGBoost", "Jupyter"]
     },
     {
@@ -164,7 +164,7 @@ function ProjectItem({ project }: { project: any }) {
           ))}
         </div>
 
-        <a href={project.link} className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-blue-400 hover:border-blue-400 transition-all">
+        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-blue-400 hover:border-blue-400 transition-all">
           View Project <ArrowUpRight size={16} />
         </a>
       </div>
