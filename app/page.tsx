@@ -2,7 +2,8 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail, Code2, Database, Globe, Network } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { X, Play } from "lucide-react";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -14,37 +15,97 @@ export default function Home() {
       title: "Neo4j RAG System",
       category: "AI Engineering / Cloud Deployment",
       desc: "Production-grade RAG pipeline reduced latency from 50s to <20s using Speculative Parallel Synthesis.",
-      link: "https://github.com/Zhouyi-Yu/Neo4j-webpageGPT5.git",
-      tags: ["FastAPI", "Neo4j", "Docker", "React"]
+      link: "https://github.com/Zhouyi-Yu/Neo4j-webpageGPT5",
+      videoLink: "https://youtu.be/r6HKEPUNpHQ",
+      tags: ["FastAPI", "Neo4j", "Docker", "GCP"]
     },
     {
       id: "02",
-      title: "Textile Risk Engine",
-      category: "Data Science / Machine Learning",
-      desc: "Global supply chain analytics platform using ML forecasts and Monte Carlo risk simulations.",
-      link: "https://github.com/Zhouyi-Yu/TextileRiskEngine.git",
-      tags: ["Python", "Pandas", "XGBoost", "Jupyter"]
+      title: "Financial Solutions Dashboard",
+      category: "Full-Stack / Cloud Native",
+      desc: "Real-time financial analytics platform with AWS App Runner deployment, Redis caching, and ASP.NET Core backend.",
+      link: "https://github.com/Zhouyi-Yu/FinancialSolution",
+      tags: ["Vue 3", "ASP.NET Core", "AWS", "Redis", "PostgreSQL"]
     },
     {
       id: "03",
-      title: "Distributed MapReduce",
-      category: "Systems Programming / Concurrency",
-      desc: "High-performance parallel processing framework rewritten in Go. Handles concurrent task distribution.",
-      link: "#",
-      tags: ["Go", "Distributed Systems", "Mutex/Locking"]
+      title: "Textile Risk Engine",
+      category: "Data Science / Machine Learning",
+      desc: "Global supply chain analytics platform using ML forecasts and Monte Carlo risk simulations.",
+      link: "https://github.com/Zhouyi-Yu/TextileRiskEngine",
+      tags: ["Python", "XGBoost", "Pandas", "Scikit-learn"]
     },
     {
       id: "04",
+      title: "Industrial RFID Firmware",
+      category: "Low-Level / Edge Computing",
+      desc: "ARMv7 Assembly firmware for RFID signal processing. Includes Python digital twin emulator for logic verification.",
+      link: "https://github.com/Zhouyi-Yu/ARMAssemblyBubbleSorting",
+      tags: ["ARM Assembly", "Python", "System Commissioning"]
+    },
+    {
+      id: "05",
+      title: "Distributed MapReduce",
+      category: "Systems Programming / Concurrency",
+      desc: "High-performance parallel processing framework implemented in Go and C. Handles concurrent task distribution.",
+      link: "https://github.com/Zhouyi-Yu/assignment2-mapreduce-Zhouyi-Yu-main",
+      tags: ["Go", "C", "RPC", "Distributed Systems"]
+    },
+    {
+      id: "06",
       title: "Polyglot News Manager",
       category: "Data Engineering / TUI",
       desc: "Hybrid Go/Python ETL pipeline loading JSONL data into MongoDB with a Rich Terminal UI.",
-      link: "#",
-      tags: ["Go", "MongoDB", "Python", "Rich CLI"]
+      link: "https://github.com/Zhouyi-Yu/project-2-gimme11per-main",
+      tags: ["Go", "Python", "MongoDB", "Rich CLI"]
+    },
+    {
+      id: "07",
+      title: "Windows Ops Toolkit",
+      category: "SysOps / Automation",
+      desc: "Professional PowerShell toolkit for system health monitoring, network diagnostics, and production troubleshooting.",
+      link: "https://github.com/Zhouyi-Yu/WindowsOpsToolkit",
+      tags: ["PowerShell", "Windows Ops", "Monitoring"]
     }
   ];
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   return (
     <div className="bg-[#0a0a0a] text-white min-h-screen selection:bg-white selection:text-black">
+      {/* Video Modal Overlay */}
+      {selectedVideo !== null && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <button
+            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <X size={40} />
+          </button>
+          <div
+            className="w-full max-w-6xl aspect-video bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {selectedVideo.includes("youtube") || selectedVideo.includes("youtu.be") ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedVideo.split("/").pop()?.split("?")[0]}`}
+                className="w-full h-full"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              />
+            ) : (
+              <video
+                src={selectedVideo}
+                className="w-full h-full"
+                controls
+                autoPlay
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference">
@@ -98,7 +159,11 @@ export default function Home() {
 
         <div className="flex flex-col">
           {projects.map((project) => (
-            <ProjectItem key={project.id} project={project} />
+            <ProjectItem
+              key={project.id}
+              project={project}
+              onWatchDemo={(url) => setSelectedVideo(url)}
+            />
           ))}
         </div>
       </section>
@@ -118,10 +183,10 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <SkillCol title="Languages" items={["Python (Expert)", "Go (Golang)", "Java", "C/C++", "TypeScript"]} />
-            <SkillCol title="Infrastructure" items={["Docker / K8s", "Neo4j GraphDB", "MongoDB", "AWS / GCP", "Linux"]} />
-            <SkillCol title="AI / Data" items={["RAG Pipelines", "Vector Search", "PySpark", "Pandas", "LLM Agents"]} />
-            <SkillCol title="Web" items={["FastAPI", "React / Next.js", "TailwindCSS", "Node.js"]} />
+            <SkillCol title="Languages" items={["Python (Expert)", "C# (.NET)", "Go (Golang)", "C/C++", "JavaScript"]} />
+            <SkillCol title="Infrastructure" items={["Docker / AWS", "GCP / Linux", "PostgreSQL", "Neo4j / Redis", "Windows Ops"]} />
+            <SkillCol title="AI / Data" items={["RAG Pipelines", "Edge Computing", "PySpark", "Pandas", "LLM Agents"]} />
+            <SkillCol title="Web / Mobile" items={["Vue.js / React", "FastAPI", "ASP.NET Core", "TailwindCSS", "Android"]} />
           </div>
         </div>
       </section>
@@ -134,7 +199,7 @@ export default function Home() {
   );
 }
 
-function ProjectItem({ project }: { project: any }) {
+function ProjectItem({ project, onWatchDemo }: { project: any, onWatchDemo?: (url: string) => void }) {
   return (
     <motion.div
       initial={{ opacity: 0.5, y: 20 }}
@@ -164,9 +229,19 @@ function ProjectItem({ project }: { project: any }) {
           ))}
         </div>
 
-        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-blue-400 hover:border-blue-400 transition-all">
-          View Project <ArrowUpRight size={16} />
-        </a>
+        <div className="flex items-center gap-8">
+          <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-blue-400 hover:border-blue-400 transition-all text-sm">
+            View Source <ArrowUpRight size={16} />
+          </a>
+          {project.videoLink && (
+            <button
+              onClick={() => onWatchDemo?.(project.videoLink)}
+              className="inline-flex items-center gap-2 text-blue-400 border-b border-blue-400 pb-1 hover:text-white hover:border-white transition-all text-sm"
+            >
+              Watch Demo <Play size={16} fill="currentColor" />
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   )
